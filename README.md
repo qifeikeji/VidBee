@@ -3,7 +3,7 @@
     <img src="build/icon.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3>VidBee</h3>
+  <h3>VidBee13</h3>
   <p>
     <a href="https://github.com/nexmoe/VidBee/stargazers"><img src="https://img.shields.io/github/stars/nexmoe/VidBee?color=ffcb47&labelColor=black&logo=github&label=Stars" /></a>
     <a href="https://github.com/nexmoe/VidBee/graphs/contributors"><img src="https://img.shields.io/github/contributors/nexmoe/VidBee?ogo=github&label=Contributors&labelColor=black" /></a>
