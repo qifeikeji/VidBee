@@ -18,6 +18,7 @@ const YTDLP_BASE_URL = 'https://github.com/yt-dlp/yt-dlp/releases/latest/downloa
 const DENO_BASE_URL = 'https://github.com/denoland/deno/releases/latest/download'
 const GITHUB_TOKEN =
   process.env.GITHUB_TOKEN || process.env.GH_TOKEN || process.env.GITHUB_API_TOKEN
+const DOWNLOAD_TIMEOUT_MS = Number(process.env.VIDBEE_DOWNLOAD_TIMEOUT_MS) || 5 * 60 * 1000
 
 // Platform configuration
 const PLATFORM_CONFIG = {
@@ -164,9 +165,17 @@ function downloadFile(url, dest) {
         )
         resolve()
       })
+
+      response.on('error', (err) => {
+        file.close()
+        safeUnlink(dest)
+        log(`Download error for ${url}: ${err.message}`, 'error')
+        reject(err)
+      })
     })
 
-    request.setTimeout(30000, () => {
+    // GitHub downloads can occasionally stall; use a generous idle timeout.
+    request.setTimeout(DOWNLOAD_TIMEOUT_MS, () => {
       request.destroy(new Error('Download timeout'))
     })
 

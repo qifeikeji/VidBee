@@ -178,7 +178,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          curl -fL --retry 3 --retry-delay 2 --retry-connrefused "${{ matrix.ffmpeg_url }}" -o ffmpeg.tar.xz
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors --retry-connrefused --connect-timeout 30 --max-time 1200 "${{ matrix.ffmpeg_url }}" -o ffmpeg.tar.xz
           if ! tar -tf ffmpeg.tar.xz >/dev/null 2>&1; then
             echo "::error::Downloaded ffmpeg archive is not a valid tar.xz"
             exit 1
@@ -192,7 +192,7 @@ jobs:
       - name: Download yt-dlp binary
         shell: bash
         run: |
-          curl -fL --retry 3 --retry-delay 2 --retry-connrefused "https://github.com/yt-dlp/yt-dlp/releases/latest/download/${{ matrix.ytdlp_asset }}" -o "resources/${{ matrix.ytdlp_output }}"
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors --retry-connrefused --connect-timeout 30 --max-time 1200 "https://github.com/yt-dlp/yt-dlp/releases/latest/download/${{ matrix.ytdlp_asset }}" -o "resources/${{ matrix.ytdlp_output }}"
           if [[ "${{ matrix.platform }}" == "linux" ]] || [[ "${{ matrix.platform }}" == "macos" ]]; then
             chmod +x "resources/${{ matrix.ytdlp_output }}"
           fi
