@@ -8,6 +8,11 @@ on:
         type: boolean
         default: false
         description: 'Whether to upload build artifacts'
+      ref:
+        required: false
+        type: string
+        default: ''
+        description: 'Git ref (branch/tag/sha) to build'
     secrets:
       MAC_CERT_P12_BASE64:
         required: false
@@ -19,6 +24,18 @@ on:
         required: false
       APPLE_API_KEY_P8_BASE64:
         required: false
+  workflow_dispatch:
+    inputs:
+      upload_artifacts:
+        required: false
+        type: boolean
+        default: false
+        description: 'Whether to upload build artifacts'
+      ref:
+        required: false
+        type: string
+        default: ''
+        description: 'Git ref (branch/tag/sha) to build'
 
 jobs:
   build:
@@ -54,6 +71,8 @@ jobs:
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
 
       - name: Install Node.js
         uses: actions/setup-node@v4
